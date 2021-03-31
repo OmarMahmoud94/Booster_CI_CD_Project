@@ -1,0 +1,19 @@
+FROM ubuntu 
+USER root 
+RUN mkdir -p jenkins_home
+RUN chmod 777 jenkins_home 
+RUN apt-get update -qq 
+RUN apt-get install openjdk-8-jdk -qq
+RUN apt-get install openssh-server -qq
+RUN apt-get install -qqy apt-transport-https ca-certificates curl gnupg lsb-release
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN apt-get update && apt-get install -y apt-transport-https
+RUN apt-get update -qq && apt-get install -y docker-ce  
+RUN useradd -ms /bin/bash jenkins 
+USER jenkins 
+WORKDIR jenkins_home
+RUN mkdir ~/.ssh
+COPY authorized_keys /home/jenkins/.ssh 
+USER root
+CMD service ssh start;bash
