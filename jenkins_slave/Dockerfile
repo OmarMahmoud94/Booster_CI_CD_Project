@@ -10,10 +10,13 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /
 RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 RUN apt-get update && apt-get install -y apt-transport-https
 RUN apt-get update -qq && apt-get install -y docker-ce  
-RUN useradd -ms /bin/bash jenkins 
+RUN useradd -ms /bin/bash jenkins
+RUN usermod -aG docker jenkins 
 USER jenkins 
 WORKDIR jenkins_home
 RUN mkdir ~/.ssh
 COPY authorized_keys /home/jenkins/.ssh 
 USER root
-CMD service ssh start;bash
+RUN chmod 777 /home/jenkins/.ssh/authorized_keys 
+CMD chmod 777 /var/run/docker.sock;service ssh start;bash
+ 
