@@ -12,7 +12,7 @@ pipeline {
      
      stage('push') {
            steps {
-                 withCredentials([usernamePassword(credentialsId: "docker_hub", usernameVariable: "username", passwordVariable: "pass")]) {
+                 withCredentials([usernamePassword(credentialsId: "docker-hub", usernameVariable: "username", passwordVariable: "pass")]) {
                  sh 'docker login -u $username -p $pass '
                  sh 'docker push omarquraah/django_app:lts'
                  }    
@@ -23,7 +23,7 @@ pipeline {
   
      stage('deploy') {
            steps {
-              sh 'docker container run -d -p 3000:8000 omarquraah/nodejsapp:lts'
+              sh 'docker container run -d -p 3000:8000 omarquraah/django_app:lts'
              
            }
            
