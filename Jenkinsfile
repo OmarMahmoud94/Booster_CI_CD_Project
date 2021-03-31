@@ -7,11 +7,7 @@ pipeline {
                   sh 'docker build . -t omarquraah/django_app:lts'
            }
 
-           post {
-                   success {
-                     slackSend(color: "33FFF3" , message:"build succeeded")
-                   }
-           }
+        
      }
      
      stage('push') {
@@ -22,23 +18,15 @@ pipeline {
                  }    
            }
 
-           post {
-                   success {
-                     slackSend(color: "33FFF3" , message:"push to docker-hub succeeded")
-                   }
-           }
+         
      }
   
      stage('deploy') {
            steps {
-              sh 'docker container run -d -p 3000:3000 omarquraah/nodejsapp:lts'
+              sh 'docker container run -d -p 3000:8000 omarquraah/nodejsapp:lts'
              
            }
-            post {
-                   success {
-                     slackSend(color: "33FFF3" , message:"deployment succeeded")
-                   }
-           }
+           
      }
   }
 }
