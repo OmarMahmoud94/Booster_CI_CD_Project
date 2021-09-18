@@ -13,7 +13,6 @@ RUN apt-get update -qq && apt-get install -y docker-ce
 RUN useradd -ms /bin/bash jenkins
 RUN usermod -aG docker jenkins 
 USER jenkins 
-WORKDIR jenkins_home
 RUN mkdir ~/.ssh
 COPY authorized_keys /home/jenkins/.ssh 
 USER root
